@@ -27,11 +27,7 @@ public class Controller {
      * @param path The path to set the current file
      */
     public Controller(final String path) {
-        Objects.requireNonNull(path, "Null string passed");
-        if (path.isBlank()) {
-            throw new IllegalArgumentException("Passed empty path");
-        }
-        this.currentFile = new File(path);
+        this.setFile(path);
     }
 
     /**
@@ -40,6 +36,18 @@ public class Controller {
      */
     public File getFile() {
         return this.currentFile;
+    }
+
+    /**
+     * Set the current file to the passed path.
+     * @param path The path to set the current file
+     */
+    public final void setFile(final String path) {
+        Objects.requireNonNull(path, "Null string passed");
+        if (path.isBlank()) {
+            throw new IllegalArgumentException("Passed empty path");
+        }
+        this.currentFile = new File(path);
     }
 
     /**
