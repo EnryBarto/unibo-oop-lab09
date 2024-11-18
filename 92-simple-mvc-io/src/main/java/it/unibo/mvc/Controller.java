@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -29,6 +27,10 @@ public class Controller {
      * @param path The path to set the current file
      */
     public Controller(final String path) {
+        Objects.requireNonNull(path, "Null string passed");
+        if (path.isBlank()) {
+            throw new IllegalArgumentException("Passed empty path");
+        }
         this.currentFile = new File(path);
     }
 
@@ -49,20 +51,14 @@ public class Controller {
     }
 
     /**
-     * Save the content of the passed file in the current file.
-     * @param inputPath The path (in form of String) of the file to read data from
+     * Save the passed text in the current file.
+     * @param inputText The text to write in the current file
      * @throws IOException If an I/O error occurs while operating with files
      */
-    public void writeToFile(final String inputPath) throws IOException {
-        Objects.requireNonNull(inputPath, "Null string passed");
-        if (inputPath.isBlank()) {
-            throw new IllegalArgumentException("Blank path passed");
-        }
+    public void writeToFile(final String inputText) throws IOException {
+        Objects.requireNonNull(inputText, "Null string passed");
         try (PrintStream ps = new PrintStream(currentFile, StandardCharsets.UTF_8)) {
-            for (final String line: Files.readAllLines(Path.of(inputPath))) {
-                ps.println(line);
-            }
+            ps.print(inputText);
         }
     }
-
 }
